@@ -54,7 +54,21 @@ function joinUsersWithPosts(users, posts) {
     });
 }
 
+/*
+    Finds posts with duplicate titles
 
+    @param  {[Object]}  [posts] An array of posts
+
+    @return {[Object]}  An array of posts with duplicate titles
+*/
+function findDuplicateTitles(posts) {
+    const titlesCountMap = posts.reduce((accMap, post) => {
+        accMap[post.title] = (accMap[post.title] || 0) + 1;
+        return accMap;
+    }, {});
+
+    return posts.filter(p => titlesCountMap[p.title] > 1);
+}
 
 (async function() {
     const POSTS_LOCATION = 'https://jsonplaceholder.typicode.com/posts'
@@ -65,8 +79,8 @@ function joinUsersWithPosts(users, posts) {
     let users = await downloadWithHttps(USERS_LOCATION);
     let usersWithPosts = joinUsersWithPosts(users, posts); 
 
-    joi
-    console.log(usersWithPosts);
+    console.log("Nie unikalne tytuły postów to: ");
+    console.log(findDuplicateTitles(posts));
 })()
 
 module.exports.joinUsersWithPosts = joinUsersWithPosts;

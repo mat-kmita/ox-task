@@ -44,6 +44,25 @@ describe("Script", function() {
 
             expect(script.joinUsersWithPosts([user_0, user_1, user_2], [post_0, post_1])).to.eql(expectedResult);
         })
+    })
 
+    describe("findDuplicateTitles()", function() {
+        it("should return an empty array if all titles are distinct", function() {
+            expect(script.findDuplicateTitles([new Post(0, 0), new Post(1, 1)]))
+            .to.eql([]);
+        })
+    
+        it("should return duplicate titles if exist", function() {
+            let post_0 = new Post(0, 0);
+            post_0.title = 'duplicate';
+    
+            let post_1 = new Post(1, 0);
+            
+            let post_2 = new Post(2, 1);
+            post_2.title = 'duplicate';
+    
+            expect(script.findDuplicateTitles([post_0, post_1, post_2]))
+            .to.eql([post_0, post_2])
+        });
     })
 })
