@@ -65,4 +65,32 @@ describe("Script", function() {
             .to.eql([post_0, post_2])
         });
     })
+
+    describe("countPosts()", function() {
+        it("should return an empty array for no users", function() {
+            expect(script.countPosts([])).to.eql([]);
+        })
+
+        it("should return correct number of posts", function() {
+            const users = [
+                new User(0),
+                new User(1)
+            ];
+            const posts = [
+                new Post(0, 0),
+                new Post(1, 2),
+                new Post(2, 1),
+                new Post(3, 0)
+            ]
+
+            const usersPosts = script.joinUsersWithPosts(users, posts);
+        
+            const expectedResult = [
+                `${users[0].username} napisał(a) 2 postów`,
+                `${users[1].username} napisał(a) 1 postów`
+            ] 
+
+            expect(script.countPosts(usersPosts)).to.eql(expectedResult)
+        })
+    })
 })

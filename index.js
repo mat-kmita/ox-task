@@ -70,6 +70,19 @@ function findDuplicateTitles(posts) {
     return posts.filter(p => titlesCountMap[p.title] > 1);
 }
 
+
+/*
+    Count number of posts written by each user.
+
+    @param  {[Object]}  users   Array of objects representing users and their posts
+
+    @return {[string]}  Array of strings with information about post count for each user
+*/
+function countPosts(users) {
+    return users.map(user => `${user.username || "unknown"} napisał(a) ${user.posts.length || 0} postów`)
+}
+
+
 (async function() {
     const POSTS_LOCATION = 'https://jsonplaceholder.typicode.com/posts'
     const USERS_LOCATION = 'https://jsonplaceholder.typicode.com/users'
@@ -81,6 +94,11 @@ function findDuplicateTitles(posts) {
 
     console.log("Nie unikalne tytuły postów to: ");
     console.log(findDuplicateTitles(posts));
+
+    console.log("Informacje o postach:");
+    console.log(countPosts(usersWithPosts));
 })()
 
 module.exports.joinUsersWithPosts = joinUsersWithPosts;
+module.exports.findDuplicateTitles = findDuplicateTitles;
+module.exports.countPosts = countPosts;
