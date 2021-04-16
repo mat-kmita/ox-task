@@ -38,6 +38,23 @@ async function downloadWithHttps(location) {
     })
 }
 
+/*
+    Creates new array of user data objects that store an array of all users' posts
+
+    @param  {[Object]}  [users] An array of objects with users' data
+    @param  {[Object]}  [posts] An array of posts data
+
+    @return {[Object]}  An array of users and posts joined on user id
+*/
+function joinUsersWithPosts(users, posts) {
+    return users.map(u => {
+        let user = Object.create(u);
+        user.posts = posts.filter(p => p.userId == user.id);
+        return user;
+    });
+}
+
+
 
 (async function() {
     const POSTS_LOCATION = 'https://jsonplaceholder.typicode.com/posts'
@@ -46,15 +63,10 @@ async function downloadWithHttps(location) {
     let posts = await downloadWithHttps(POSTS_LOCATION);
 
     let users = await downloadWithHttps(USERS_LOCATION);
-    let usersWithPosts = users.map(u => {
-        let user = Object.create(u);
-        user.posts = posts.filter(p => p.userId == user.id);
-        console.log(user.posts.length);
-        return user;
-    })
-    users[0].name = 'Franke'
-    console.log(usersWithPosts[0].name)
+    let usersWithPosts = joinUsersWithPosts(users, posts); 
 
-
+    joi
     console.log(usersWithPosts);
 })()
+
+module.exports.joinUsersWithPosts = joinUsersWithPosts;
