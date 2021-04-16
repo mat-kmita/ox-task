@@ -93,4 +93,71 @@ describe("Script", function() {
             expect(script.countPosts(usersPosts)).to.eql(expectedResult)
         })
     })
+
+    describe("findClosestUsers", function() {
+        it("should return an empty array for no users", function() {
+            expect(script.findClosestUsers([])).to.eql([])
+        })
+
+        it("should return an empty array for one user", function() {
+            const user = new User(0);
+            user.address = {
+                geo: {
+                    lat: 20.0,
+                    lng: 20.0
+                }
+            }
+            const user2 = new User()
+            expect(script.findClosestUsers([user])).to.eql([])
+        })
+
+        it("should return reversed array for two users", function() {
+            const user_1 = new User(0);
+            user_1.address = {
+                geo: {
+                    lat: 20.0,
+                    lng: 20.0
+                }
+            }
+
+            const user_2 = new User(1);
+            user_2.address = {
+                geo: {
+                    lat: 30.0,
+                    lng: 30.0
+                }
+            }
+
+            expect(script.findClosestUsers([user_1, user_2])).to.eql([user_2, user_1])
+        })
+
+        it("should return correct result for more users", function() {
+            const user_1 = new User(0);
+            user_1.address = {
+                geo: {
+                    lat: 51.3563,
+                    lng: 20.6364
+                }
+            }
+
+            const user_2 = new User(1);
+            user_2.address = {
+                geo: {
+                    lat: 51.4519, 
+                    lng: 20.4833
+                }
+            }
+
+            const user_3 = new User(2);
+            user_3.address = {
+                geo: {
+                    lat: 51.4026,
+                    lng:  21.1473
+                }
+            }
+
+            expect(script.findClosestUsers([user_1, user_2, user_3]))
+            .to.eql([user_2, user_1, user_1])
+        })
+    })
 })
